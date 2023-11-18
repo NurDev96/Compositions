@@ -7,12 +7,15 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.example.compositions.R
 import com.example.compositions.databinding.FragmentGameFinishedBinding
 import com.example.compositions.domain.entity.GameResults
 
 class GameFinishedFragment : Fragment() {
 
     private lateinit var gameResult: GameResults
+    private lateinit var viewModel: GameViewModel
+
     private var _binding: FragmentGameFinishedBinding? = null
     private val binding: FragmentGameFinishedBinding
         get() = _binding ?: throw RuntimeException("FragmentGameFinishedBinding? = null")
@@ -43,6 +46,12 @@ class GameFinishedFragment : Fragment() {
         binding.buttonRetry.setOnClickListener {
             retryGame()
         }
+    }
+
+    private fun showResult() {
+        val requiredPercentage = R.string.required_percentage
+        val requiredScore = R.string.required_score
+        val progressAnswers = R.string.progress_answers
     }
 
     private fun parsArgs() {

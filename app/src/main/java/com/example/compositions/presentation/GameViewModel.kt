@@ -76,6 +76,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         getGameSettings(level)
         startTimer()
         generateQuestions()
+        updateProgress()
     }
 
     fun chooseAnswer(number: Int) {
@@ -100,7 +101,11 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun calculateOfRightAnswers(): Int {
-        return ((countOfRightAnswers / countOfQuestions.toDouble()) * 100).toInt()
+        if (countOfQuestions == 0) {
+            return 0
+        } else {
+            return ((countOfRightAnswers / countOfQuestions.toDouble()) * 100).toInt()
+        }
     }
 
     private fun checkAnswer(number: Int) {
@@ -137,7 +142,6 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         _question.value = generateQuestionUseCase(gameSettings.maxSumValue)
     }
 
-
     private fun formatTime(milliSeconds: Long): String {
         val seconds = milliSeconds / MILLIS_IN_SECONDS // обшое кол секунд
         val minutes = seconds / SECONDS_IN_MINUTES // кол минут
@@ -159,10 +163,8 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         timer?.cancel()
     }
 
-
     companion object {
         private const val MILLIS_IN_SECONDS = 1000L
         private const val SECONDS_IN_MINUTES = 60L
     }
 }
-
