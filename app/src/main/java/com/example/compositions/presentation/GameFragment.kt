@@ -14,6 +14,7 @@ import com.example.compositions.databinding.FragmentGameBinding
 import com.example.compositions.domain.entity.GameResults
 import com.example.compositions.domain.entity.Level
 
+@Suppress("DEPRECATION")
 class GameFragment : Fragment() {
 
     private lateinit var level: Level
@@ -126,7 +127,7 @@ class GameFragment : Fragment() {
     private fun launchGameFinishedFragment(gameResults: GameResults) {
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.main_container, GameFinishedFragment.newInstance(gameResults))
-            .addToBackStack(GameFragment.NAME)
+            .addToBackStack(null)
             .commit()
     }
 
@@ -134,6 +135,7 @@ class GameFragment : Fragment() {
 
         const val NAME = "GameFragment"
         private const val KEY_LEVEL = "level"
+
         fun newInstance(level: Level): GameFragment {
             return GameFragment().apply {
                 arguments = Bundle().apply {

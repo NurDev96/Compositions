@@ -1,6 +1,7 @@
 package com.example.compositions.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,6 @@ import com.example.compositions.domain.entity.GameResults
 class GameFinishedFragment : Fragment() {
 
     private lateinit var gameResult: GameResults
-    private lateinit var viewModel: GameViewModel
 
     private var _binding: FragmentGameFinishedBinding? = null
     private val binding: FragmentGameFinishedBinding
@@ -36,22 +36,61 @@ class GameFinishedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
+        setupClickListener()
+        bindViews()
+    }
+
+    private fun setupClickListener() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
+                    Log.i("buttonRetry", "buttonRetry - Y or N")
                     retryGame()
                 }
             })
         binding.buttonRetry.setOnClickListener {
+            Log.i("buttonRetry", "buttonRetry - Y or N")
             retryGame()
         }
     }
 
-    private fun showResult() {
-        val requiredPercentage = R.string.required_percentage
-        val requiredScore = R.string.required_score
-        val progressAnswers = R.string.progress_answers
+    private fun bindViews() {
+        with(binding) {
+            emojiResult.setImageResource(getSmileResId())
+            tvRequiredAnswers.text = String.format(
+                getString(R.string.required_score),
+                gameResult.gameSettings.minCountOfRightAnswers
+            )
+            Log.d("string","da ${getString(R.string.required_score)} ")
+            tvScoreAnswers.text = String.format(
+                getString(R.string.score_answers),
+                gameResult.countOfRightAnswers
+            )
+            tvRequiredPercentage.text = String.format(
+                getString(R.string.required_percentage),
+                gameResult.gameSettings.minPercentOfRightAnswers
+            )
+            tvScorePercentage.text = String.format(
+                getString(R.string.score_percentage),
+                getPercentOfRightAnswers()
+            )
+        }
+    }
+
+    private fun getPercentOfRightAnswers() = with(gameResult) {
+        if (countOfQuestions == 0) {
+            0
+        } else {
+            ((countOfRightAnswers / countOfQuestions.toDouble()) * 100).toInt()
+        }
+    }
+
+    private fun getSmileResId(): Int {
+        return if (gameResult.winner) {
+            R.drawable.ic_smile
+        } else {
+            R.drawable.ic_sad
+        }
     }
 
     private fun parsArgs() {
