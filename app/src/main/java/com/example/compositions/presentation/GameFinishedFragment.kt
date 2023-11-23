@@ -44,12 +44,10 @@ class GameFinishedFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    Log.i("buttonRetry", "buttonRetry - Y or N")
                     retryGame()
                 }
             })
         binding.buttonRetry.setOnClickListener {
-            Log.i("buttonRetry", "buttonRetry - Y or N")
             retryGame()
         }
     }
@@ -61,7 +59,6 @@ class GameFinishedFragment : Fragment() {
                 getString(R.string.required_score),
                 gameResult.gameSettings.minCountOfRightAnswers
             )
-            Log.d("string","da ${getString(R.string.required_score)} ")
             tvScoreAnswers.text = String.format(
                 getString(R.string.score_answers),
                 gameResult.countOfRightAnswers
@@ -114,6 +111,7 @@ class GameFinishedFragment : Fragment() {
     companion object {
 
         private const val KEY_GAME_RESULT = "game_result"
+
         fun newInstance(gameResult: GameResults): GameFinishedFragment {
             return GameFinishedFragment().apply {
                 arguments = Bundle().apply {

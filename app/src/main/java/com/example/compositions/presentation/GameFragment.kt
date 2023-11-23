@@ -127,6 +127,7 @@ class GameFragment : Fragment() {
     private fun launchGameFinishedFragment(gameResults: GameResults) {
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.main_container, GameFinishedFragment.newInstance(gameResults))
+//            .addToBackStack(ChooseLevelFragment.NAME)
             .addToBackStack(null)
             .commit()
     }
